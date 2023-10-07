@@ -1,5 +1,5 @@
 {
-  "name": "@ArthesTN/discord-music-player",
+  "name": "@arthestn/discord-music-player",
   "version": "1.0.0",
   "description": "updated dependencies for discord-music-player package",
   "main": "dist/index.js",
@@ -43,7 +43,7 @@
     "htmlparser2": "9.0.0",
     "libsodium-wrappers": "0.7.13",
     "spotify-url-info": "3.2.8",
-    "youtubei": "1.1.2",
+    "youtubei": "^0.0.1-rc.34",
     "ytdl-core": "4.11.5",
     "ytsr": "3.8.4"
   },
