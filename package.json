@@ -1,6 +1,6 @@
 {
   "name": "@arthestn/discord-music-player",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "updated dependencies for discord-music-player package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -50,5 +50,6 @@
   "directories": {
     "doc": "docs",
     "test": "test"
-  }
+  },
+  "devDependencies": {}
 }
