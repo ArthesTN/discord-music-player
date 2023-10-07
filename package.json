@@ -43,7 +43,7 @@
     "htmlparser2": "9.0.0",
     "libsodium-wrappers": "0.7.13",
     "spotify-url-info": "3.2.8",
-    "youtubei": "^0.0.1-rc.34",
+    "youtubei": "^0.0.1-rc.36",
     "ytdl-core": "4.11.5",
     "ytsr": "3.8.4"
   },

@@ -73,9 +73,9 @@ class Client {
             const response = yield this.http.get(`${constants_1.WATCH_END_POINT}`, {
                 params: { v: videoId, pbj: "1" },
             });
-            if (!response.data.response.contents)
+            if (!response.data[3].response.contents)
                 return undefined;
-            return (!response.data.playerResponse.playabilityStatus.liveStreamability
+            return (!response.data[2].playerResponse.playabilityStatus.liveStreamability
                 ? new _1.Video({ client: this }).load(response.data)
                 : new _1.LiveVideo({ client: this }).load(response.data));
         });

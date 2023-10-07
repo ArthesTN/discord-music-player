@@ -37,7 +37,7 @@ class LiveVideo extends _1.BaseVideo {
             .map((r) => r.text)
             .join(" ")
             .replace(/[^0-9]/g, "");
-        this.chatContinuation = (_a = data.response.contents.twoColumnWatchNextResults.conversationBar.liveChatRenderer) === null || _a === void 0 ? void 0 : _a.continuations[0].reloadContinuationData.continuation;
+        this.chatContinuation = (_a = data[3].response.contents.twoColumnWatchNextResults.conversationBar.liveChatRenderer) === null || _a === void 0 ? void 0 : _a.continuations[0].reloadContinuationData.continuation;
         return this;
     }
     /**
