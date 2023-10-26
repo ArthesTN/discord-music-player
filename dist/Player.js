@@ -113,10 +113,11 @@ class Player extends events_1.default {
         }
         if (oldState.channelId === newState.channelId)
             return;
-        if (!leaveOnEmpty || queue.connection.channel.members.size > 1)
+        
+        if (!leaveOnEmpty || queue.connection.channel.members.filter(member => !member.user.bot).size)
             return;
         setTimeout(() => {
-            if (queue.connection.channel.members.size > 1)
+            if (queue.connection.channel.members.filter(member => !member.user.bot).size)
                 return;
             if (queue.connection.channel.members.has(this.client.user.id)) {
                 queue.leave();
