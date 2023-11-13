@@ -1,9 +1,10 @@
-version 1.0.4:
-include Youtube shorts links
-version 1.0.3:
-revert youtubei version
-past versions:
-empty channel is defined as 0 non-bot members
+## version 1.0.4:
+- include Youtube shorts links
+## version 1.0.3:
+- revert youtubei version
+## past versions:
+- empty channel is defined as 0 non-bot members
+
 # Discord Music Player
 ![npm](https://img.shields.io/npm/dt/discord-music-player?style=for-the-badge)
 ![npm](https://img.shields.io/npm/v/discord-music-player?style=for-the-badge)
