@@ -1,15 +1,9 @@
 {
   "name": "@arthestn/discord-music-player",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "updated dependencies for discord-music-player package",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {
-    "build": "tsc --build tsconfig.json",
-    "test": "jest test/test.js",
-    "docs:test": "docgen --jsdoc jsdoc.json --source src/*.ts src/**/*.ts --custom docs/custom.yml",
-    "docs": "docgen --jsdoc jsdoc.json --source src/*.ts src/**/*.ts --custom docs/custom.yml --output docs/docs.json"
-  },
   "keywords": [
     "music",
     "player",
@@ -23,7 +17,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SushiBtw/discord-music-player.git"
+    "url": "git+https://github.com/ArthesTN/discord-music-player.git"
   },
   "bugs": {
     "url": "https://github.com/SushiBtw/discord-music-player/issues"

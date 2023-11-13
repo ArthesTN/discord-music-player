@@ -26,7 +26,11 @@ class Utils {
      */
     static parseVideo(url) {
         const match = url.match(this.regexList.YouTubeVideoID);
-        return match ? match[7] : null;
+        if (match) {
+            return match[1] || match[2]; // Video ID is captured in one of the capturing groups
+        } else {
+            return null; // If no match is found
+        }
     }
     /**
      * Get timecode from YouTube link
@@ -351,7 +355,7 @@ class Utils {
 exports.Utils = Utils;
 Utils.regexList = {
     YouTubeVideo: /^((?:https?:)\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))((?!channel)(?!user)\/(?:[\w\-]+\?v=|embed\/|v\/)?)((?!channel)(?!user)[\w\-]+)(((.*(\?|\&)t=(\d+))(\D?|\S+?))|\D?|\S+?)$/,
-    YouTubeVideoID: /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/,
+    YouTubeVideoID: /(?:youtu\.be\/|youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=))([a-zA-Z0-9_-]{11})(?:\?.*shorts=1)?|youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
     YouTubePlaylist: /^((?:https?:)\/\/)?((?:www|m)\.)?((?:youtube\.com)).*(youtu.be\/|list=)([^#&?]*).*/,
     YouTubePlaylistID: /[&?]list=([^&]+)/,
     Spotify: /https?:\/\/(?:embed\.|open\.)(?:spotify\.com\/)(?:track\/|\?uri=spotify:track:)((\w|-)+)(?:(?=\?)(?:[?&]foo=(\d*)(?=[&#]|$)|(?![?&]foo=)[^#])+)?(?=#|$)/,
