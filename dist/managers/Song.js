@@ -74,6 +74,16 @@ class Song {
          * @name Song#data
          * @type {any}
          */
+        /**
+         * First time in queue
+         * @name Song#firstTimeInQueue
+         * @type {boolean}
+         */
+        /**
+         * Filters for the song
+         * @name Song#filters
+         * @type {StreamFilters}
+         */
         this.player = queue.player;
         this.queue = queue;
         this.name = raw.name;
@@ -86,6 +96,8 @@ class Song {
         this.isFirst = false;
         this.seekTime = raw.seekTime ?? 0;
         this.data = null;
+        this.firstTimeInQueue = true;
+        this.filters = undefined;
     }
     /**
      * Converts duration (HH:MM:SS) to milliseconds
@@ -115,6 +127,13 @@ class Song {
      */
     toString() {
         return `${this.name} | ${this.author}`;
+    }
+    /**
+     * Toggles firstTimeInQueue
+     * @returns {void}
+     */
+    flipFirstTimeInQueue() {
+        this.firstTimeInQueue = false;
     }
 }
 exports.Song = Song;

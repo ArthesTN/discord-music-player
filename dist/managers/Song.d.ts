@@ -1,5 +1,5 @@
 import { User } from 'discord.js';
-import { Player, Queue, RawSong } from '..';
+import { Filter, Player, Queue, RawSong } from '..';
 export declare class Song {
     player: Player;
     queue: Queue;
@@ -13,6 +13,8 @@ export declare class Song {
     isFirst: boolean;
     seekTime: number;
     data?: any;
+    firstTimeInQueue: boolean;
+    filters: [Filter] | undefined;
     /**
      * Song constructor
      * @param {RawSong} raw
@@ -41,4 +43,9 @@ export declare class Song {
      * @returns {string}
      */
     toString(): string;
+    /**
+     * Toggles firstTimeInQueue
+     * @returns {void}
+     */
+    flipFirstTimeInQueue(): void;
 }

@@ -1,3 +1,5 @@
+## version 1.0.5:
+- forked from @jadestudios/discord-music-player instead since discord-ytdl-core broke (now uses play-dl)
 ## version 1.0.4:
 - include Youtube shorts links
 ## version 1.0.3:

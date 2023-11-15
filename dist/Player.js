@@ -35,9 +35,7 @@ class Player extends events_1.default {
          * @type {Collection<Snowflake, Queue>}
          */
         this.queues = new discord_js_1.Collection();
-        this.client.on('voiceStateUpdate', (oldState, newState) => {
-            this._voiceUpdate(oldState, newState);
-        });
+        this.client.on('voiceStateUpdate', (oldState, newState) => this._voiceUpdate(oldState, newState));
     }
     /**
      * Creates the guild queue.

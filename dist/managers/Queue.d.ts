@@ -1,6 +1,6 @@
 import { Guild, GuildChannelResolvable } from "discord.js";
 import { StreamConnection } from "../voice/StreamConnection";
-import { Player, PlayerOptions, Playlist, PlaylistOptions, PlayOptions, ProgressBar, ProgressBarOptions, RepeatMode, Song } from "..";
+import { Filter, Player, PlayerOptions, Playlist, PlaylistOptions, PlayOptions, ProgressBar, ProgressBarOptions, RepeatMode, Song } from "..";
 export declare class Queue<T = unknown> {
     player: Player;
     guild: Guild;
@@ -19,21 +19,6 @@ export declare class Queue<T = unknown> {
      */
     constructor(player: Player, guild: Guild, options?: PlayerOptions);
     /**
-     * Gets the current volume
-     * @type {number}
-     */
-    get volume(): number;
-    /**
-     * Gets the paused state of the player
-     * @type {boolean}
-     */
-    get paused(): boolean;
-    /**
-     * Returns current playing song
-     * @type {?Song}
-     */
-    get nowPlaying(): Song | undefined;
-    /**
      * Joins a voice channel
      * @param {GuildChannelResolvable} channelId
      * @returns {Promise<Queue>}
@@ -49,6 +34,7 @@ export declare class Queue<T = unknown> {
         immediate?: boolean;
         seek?: number;
         data?: T;
+        filters?: [Filter];
     }): Promise<Song>;
     /**
      * Plays or Queues a playlist (in a VoiceChannel)
@@ -64,7 +50,7 @@ export declare class Queue<T = unknown> {
      * @param {number} time
      * @returns {boolean}
      */
-    seek(time: number): Promise<true | Song>;
+    seek(time: number): Promise<true | Song | undefined>;
     /**
      * Skips the current playing Song and returns it
      * @param {number} [index=0]
@@ -94,11 +80,26 @@ export declare class Queue<T = unknown> {
      */
     remove(index: number): Song | undefined;
     /**
+     * Gets the current volume
+     * @type {number}
+     */
+    get volume(): number;
+    /**
+     * Gets the paused state of the player
+     * @type {boolean}
+     */
+    get paused(): boolean;
+    /**
      * Sets the current volume
      * @param {number} volume
      * @returns {boolean}
      */
     setVolume(volume: number): boolean;
+    /**
+     * Returns current playing song
+     * @type {?Song}
+     */
+    get nowPlaying(): Song | undefined;
     /**
      * Clears the Queue
      * @returns {void}
@@ -118,7 +119,7 @@ export declare class Queue<T = unknown> {
     createProgressBar(options?: ProgressBarOptions): ProgressBar;
     /**
      * Set's custom queue data
-     * @param {any} data
+     * @param {T} data
      * @returns {void}
      */
     setData(data: T): void;

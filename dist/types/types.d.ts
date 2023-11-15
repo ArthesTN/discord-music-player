@@ -59,7 +59,6 @@ export interface PlaylistOptions {
     requestedBy?: User;
     shuffle?: boolean;
     index?: number;
-    localAddress?: string;
 }
 /**
  * @typedef {object} ProgressBarOptions
@@ -253,4 +252,44 @@ export interface RawApplePlaylist {
         artist: string;
         title: string;
     }[];
+}
+export type StreamFiltersName = keyof StreamFilters;
+export type Filter = string;
+export interface StreamFilters {
+    bassboost_low?: Filter;
+    bassboost?: Filter;
+    bassboost_high?: Filter;
+    "8D"?: Filter;
+    vaporwave?: Filter;
+    nightcore?: Filter;
+    phaser?: Filter;
+    tremolo?: Filter;
+    vibrato?: Filter;
+    reverse?: Filter;
+    treble?: Filter;
+    normalizer?: Filter;
+    normalizer2?: Filter;
+    surrounding?: Filter;
+    pulsator?: Filter;
+    subboost?: Filter;
+    karaoke?: Filter;
+    flanger?: Filter;
+    gate?: Filter;
+    haas?: Filter;
+    mcompand?: Filter;
+    mono?: Filter;
+    mstlr?: Filter;
+    mstrr?: Filter;
+    compressor?: Filter;
+    expander?: Filter;
+    softlimiter?: Filter;
+    chorus?: Filter;
+    chorus2d?: Filter;
+    chorus3d?: Filter;
+    fadein?: Filter;
+    dim?: Filter;
+    earrape?: Filter;
+    echo?: Filter;
+    lowpass?: Filter;
+    highpass?: Filter;
 }

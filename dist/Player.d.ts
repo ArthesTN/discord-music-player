@@ -1,7 +1,7 @@
 import { Client, Collection, Snowflake, VoiceState } from "discord.js";
 import EventEmitter from "events";
 import { Queue } from "./managers/Queue";
-import { PlayerEvents, PlayerOptions } from "./types/types";
+import { PlayerOptions, PlayerEvents } from "./types/types";
 export declare class Player<OptionsData = any> extends EventEmitter {
     client: Client;
     queues: Collection<Snowflake, Queue<OptionsData>>;

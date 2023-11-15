@@ -14,7 +14,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Utils = exports.StreamConnection = exports.DMPErrorMessages = exports.DMPErrors = exports.DMPError = exports.ProgressBar = exports.Playlist = exports.Song = exports.Queue = exports.Player = void 0;
+exports.StreamFilters = exports.Utils = exports.StreamConnection = exports.DMPErrorMessages = exports.DMPErrors = exports.DMPError = exports.ProgressBar = exports.Playlist = exports.Song = exports.Queue = exports.Player = void 0;
 var Player_1 = require("./Player");
 Object.defineProperty(exports, "Player", { enumerable: true, get: function () { return Player_1.Player; } });
 var Queue_1 = require("./managers/Queue");
@@ -33,4 +33,6 @@ var StreamConnection_1 = require("./voice/StreamConnection");
 Object.defineProperty(exports, "StreamConnection", { enumerable: true, get: function () { return StreamConnection_1.StreamConnection; } });
 var Utils_1 = require("./utils/Utils");
 Object.defineProperty(exports, "Utils", { enumerable: true, get: function () { return Utils_1.Utils; } });
+var Filters_1 = require("./managers/Filters");
+Object.defineProperty(exports, "StreamFilters", { enumerable: true, get: function () { return Filters_1.StreamFilters; } });
 __exportStar(require("./types/types"), exports);

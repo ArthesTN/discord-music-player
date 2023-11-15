@@ -37,42 +37,46 @@ class StreamConnection extends events_1.EventEmitter {
         this.channel = channel;
         this.connection.on('stateChange', async (oldState, newState) => {
             if (newState.status === voice_1.VoiceConnectionStatus.Disconnected) {
-                if (newState.reason === voice_1.VoiceConnectionDisconnectReason.WebSocketClose && newState.closeCode === 4014) {
-                    try {
-                        // Attempting to re-join the voice channel, after possibly changing channels
-                        await (0, voice_1.entersState)(this.connection, voice_1.VoiceConnectionStatus.Connecting, 5000);
+                if (this.connection) {
+                    if (newState.reason === voice_1.VoiceConnectionDisconnectReason.WebSocketClose && newState.closeCode === 4014) {
+                        try {
+                            // Attempting to re-join the voice channel, after possibly changing channels
+                            await (0, voice_1.entersState)(this.connection, voice_1.VoiceConnectionStatus.Connecting, 5000);
+                        }
+                        catch {
+                            // It was manually disconnected and the connection is closed in Player.js _voiceUpdate
+                        }
                     }
-                    catch {
-                        // It was mannually disconnected and the connection is closed in Player.js _voiceUpdate
+                    else if (this.connection.rejoinAttempts < 5) {
+                        await wait((this.connection.rejoinAttempts + 1) * 5000);
+                        this.connection.rejoin();
                     }
-                }
-                else if (this.connection.rejoinAttempts < 5) {
-                    await wait((this.connection.rejoinAttempts + 1) * 5000);
-                    this.connection.rejoin();
-                }
-                else {
-                    this.leave();
+                    else {
+                        this.leave();
+                    }
                 }
             }
             else if (newState.status === voice_1.VoiceConnectionStatus.Destroyed) {
                 this.stop();
+                this.connection = undefined; //Local reference to connection should be undefined if connection is already destroyed
             }
-            else if (!this.readyLock &&
-                (newState.status === voice_1.VoiceConnectionStatus.Connecting || newState.status === voice_1.VoiceConnectionStatus.Signalling)) {
-                this.readyLock = true;
-                try {
-                    await this._enterState();
-                }
-                catch {
-                    this.leave();
-                }
-                finally {
-                    this.readyLock = false;
+            else if (!this.readyLock && (newState.status === voice_1.VoiceConnectionStatus.Connecting || newState.status === voice_1.VoiceConnectionStatus.Signalling)) {
+                if (this.connection) {
+                    this.readyLock = true;
+                    try {
+                        await this._enterState();
+                    }
+                    catch {
+                        if (this.connection.state.status !== voice_1.VoiceConnectionStatus.Destroyed)
+                            this.leave();
+                    }
+                    finally {
+                        this.readyLock = false;
+                    }
                 }
             }
         });
-        this.player
-            .on('stateChange', (oldState, newState) => {
+        this.player.on('stateChange', (oldState, newState) => {
             if (newState.status === voice_1.AudioPlayerStatus.Idle && oldState.status !== voice_1.AudioPlayerStatus.Idle) {
                 if (!this.paused) {
                     this.emit('end', this.resource);
@@ -86,8 +90,7 @@ class StreamConnection extends events_1.EventEmitter {
                     return;
                 }
             }
-        })
-            .on('error', data => {
+        }).on('error', data => {
             this.emit('error', data);
         });
         this.connection.subscribe(this.player);
@@ -111,7 +114,8 @@ class StreamConnection extends events_1.EventEmitter {
      * @private
      */
     async _enterState() {
-        await (0, voice_1.entersState)(this.connection, voice_1.VoiceConnectionStatus.Ready, 20000);
+        if (this.connection)
+            await (0, voice_1.entersState)(this.connection, voice_1.VoiceConnectionStatus.Ready, 20000);
     }
     /**
      *
@@ -119,6 +123,8 @@ class StreamConnection extends events_1.EventEmitter {
      * @returns {Promise<StreamConnection>}
      */
     async playAudioStream(resource) {
+        if (!this.connection)
+            throw new __1.DMPError(__1.DMPErrors.NO_VOICE_CONNECTION);
         if (!resource)
             throw new __1.DMPError(__1.DMPErrors.RESOURCE_NOT_READY);
         if (!this.resource)
@@ -158,7 +164,7 @@ class StreamConnection extends events_1.EventEmitter {
      */
     leave() {
         this.player.stop(true);
-        if (this.connection.state.status !== voice_1.VoiceConnectionStatus.Destroyed)
+        if (this.connection)
             this.connection.destroy();
     }
     /**

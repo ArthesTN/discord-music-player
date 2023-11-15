@@ -3,6 +3,7 @@ import { GuildChannel } from "discord.js";
 export declare class Utils {
     static regexList: {
         YouTubeVideo: RegExp;
+        YouTubeVideoTime: RegExp;
         YouTubeVideoID: RegExp;
         YouTubePlaylist: RegExp;
         YouTubePlaylistID: RegExp;
@@ -11,10 +12,6 @@ export declare class Utils {
         Apple: RegExp;
         ApplePlaylist: RegExp;
     };
-    /**
-     *
-     */
-    private constructor();
     /**
      * Get ID from YouTube link
      * @param {string} url
@@ -41,7 +38,7 @@ export declare class Utils {
      * @param {number} [Limit=1]
      * @return {Promise<Song[]>}
      */
-    static search(Search: string, SOptions: PlayOptions, Queue: Queue, Limit?: number): Promise<Song[]>;
+    static search(Search: string, SOptions: PlayOptions | undefined, Queue: Queue, Limit?: number): Promise<Song[]>;
     /**
      * Search for Song via link
      * @param {string} Search
@@ -49,7 +46,7 @@ export declare class Utils {
      * @param {Queue} Queue
      * @return {Promise<Song>}
      */
-    static link(Search: string, SOptions: PlayOptions, Queue: Queue): Promise<Song>;
+    static link(Search: string, SOptions: PlayOptions | undefined, Queue: Queue): Promise<Song | null | undefined>;
     /**
      * Gets the best result of a Search
      * @param {Song|string} Search
@@ -57,7 +54,7 @@ export declare class Utils {
      * @param {Queue} Queue
      * @return {Promise<Song>}
      */
-    static best(Search: Song | string, SOptions: PlayOptions, Queue: Queue): Promise<Song>;
+    static best(Search: Song | string, SOptions: PlayOptions | undefined, Queue: Queue): Promise<Song>;
     /**
      * Search for Playlist
      * @param {string} Search
@@ -65,9 +62,9 @@ export declare class Utils {
      * @param {Queue} Queue
      * @return {Promise<Playlist>}
      */
-    static playlist(Search: Playlist | string, SOptions: PlaylistOptions & {
+    static playlist(Search: Playlist | string, SOptions: (PlaylistOptions & {
         data?: any;
-    }, Queue: Queue): Promise<Playlist>;
+    }) | undefined, Queue: Queue): Promise<Playlist>;
     /**
      * Shuffles an array
      * @param {any[]} array

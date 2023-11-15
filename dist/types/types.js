@@ -31,7 +31,7 @@ exports.DefaultPlayerOptions = {
  */
 exports.DefaultPlayOptions = {
     sortBy: 'relevance',
-    timecode: false
+    timecode: true //False defeats purpose of ?t=
 };
 /**
  * Default playlist options object

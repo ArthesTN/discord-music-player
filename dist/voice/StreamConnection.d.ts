@@ -9,7 +9,7 @@ import { StageChannel, VoiceChannel } from "discord.js";
 import { Readable } from "stream";
 import { StreamConnectionEvents, Song } from "..";
 export declare class StreamConnection extends EventEmitter {
-    readonly connection: VoiceConnection;
+    connection: VoiceConnection | undefined;
     readonly player: AudioPlayer;
     channel: VoiceChannel | StageChannel;
     resource?: AudioResource<Song>;
