@@ -1,3 +1,5 @@
+## version 1.0.9:
+- update yt-stream
 ## version 1.0.8:
 - play-dl broke(now uses yt-stream)
 ## version 1.0.7:
