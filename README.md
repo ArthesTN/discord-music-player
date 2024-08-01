@@ -1,3 +1,5 @@
+## version 1.0.10:
+- yt-stream broke, back to play-dl
 ## version 1.0.9:
 - update yt-stream
 ## version 1.0.8:

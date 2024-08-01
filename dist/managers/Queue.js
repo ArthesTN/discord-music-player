@@ -4,7 +4,7 @@ exports.Queue = void 0;
 const StreamConnection_1 = require("../voice/StreamConnection");
 const voice_1 = require("@discordjs/voice");
 const __1 = require("..");
-const play_dl_1 = require("yt-stream");
+const play_dl_1 = require("play-dl");
 const Filters_1 = require("./Filters");
 class Queue {
     /**
@@ -223,12 +223,23 @@ class Queue {
             options.seek = song.seekTime; //If on repeat, song will start from the same seeked spot
         let streamSong;
         let i = 0;
+        /* yt-stream 
         while (!streamSong && i < 5) {
             streamSong = await (0, play_dl_1.stream)(song.url, {
                 quality: 'high',
                 type: 'audio',
                 highWaterMark: 1028 * 1028,
                 download: true
+            }).catch(error => {
+                console.error(error);
+            });
+            i++;
+        } */
+        while (!streamSong && i < 5) {
+            streamSong = await (0, play_dl_1.stream)(song.url, {
+                seek: options.seek ? options.seek / 1000 : 0,
+                quality: quality.toLowerCase() === 'low' ? 1 : 2,
+                discordPlayerCompatibility: song.filters ? true : false
             }).catch(error => {
                 console.error(error);
             });
