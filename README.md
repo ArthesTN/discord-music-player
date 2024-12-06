@@ -1,3 +1,5 @@
+## version 1.0.12:
+- update packages
 ## version 1.0.11:
 - yt-stream
 ## version 1.0.10:
