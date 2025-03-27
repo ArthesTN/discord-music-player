@@ -4,8 +4,11 @@ exports.Queue = void 0;
 const StreamConnection_1 = require("../voice/StreamConnection");
 const voice_1 = require("@discordjs/voice");
 const __1 = require("..");
-const play_dl_1 = require("play-dl");
+const play_dl_1 = require("yt-stream");
 const Filters_1 = require("./Filters");
+const ytdl = require("@distube/ytdl-core");
+const youtubedl = require('youtube-dl-exec');
+
 class Queue {
     /**
      * Queue constructor
@@ -234,7 +237,9 @@ class Queue {
                 console.error(error);
             });
             i++;
-        } */
+        } 
+        */
+        /*
         while (!streamSong && i < 5) {
             streamSong = await (0, play_dl_1.stream)(song.url, {
                 seek: options.seek ? options.seek / 1000 : 0,
@@ -244,7 +249,32 @@ class Queue {
                 console.error(error);
             });
             i++;
-        }
+        } */
+        /*
+        // distube/ytdl-core
+
+            while (!streamSong && i < 5) {
+                try {
+                    // Wait for the promise to resolve before continuing
+                    streamSong = await ytdl(song.url, {
+                        quality: "highestaudio"
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+                i++;
+            }
+        */
+        // youtube-dl-exec
+        console.log(song.url)
+        let process;
+        process = youtubedl.exec(song.url, {
+                    output: '-',
+                    format: 'bestaudio[ext=webm]',
+                    quiet: true,
+                }, { stdio: ['ignore', 'pipe', 'ignore'] });
+            
+        streamSong = process.stdout;
         if (!streamSong) {
             this.player.emit('error', __1.DMPErrorMessages.SearchIsNull, this);
             const oldSong = this.songs.shift();
@@ -257,16 +287,17 @@ class Queue {
                 this.player.emit('songChanged', this, oldSong, oldSong);
             }
         }
+        //  yt-stream is streamSong.stream, otherwise streamSong
         else {
             let resource;
             if (song.filters) {
-                resource = this.connection.createAudioStream((0, Filters_1.createFFmpegStream)(streamSong.stream, { encoderArgs: song.filters, seek: options.seek }), {
+                resource = this.connection.createAudioStream((0, Filters_1.createFFmpegStream)(streamSong, { encoderArgs: song.filters, seek: options.seek }), {
                     metadata: song,
                     inputType: voice_1.StreamType.OggOpus
                 });
             }
             else {
-                resource = this.connection.createAudioStream(streamSong.stream, {
+                resource = this.connection.createAudioStream(streamSong, {
                     metadata: song,
                     inputType: streamSong.type
                 });
