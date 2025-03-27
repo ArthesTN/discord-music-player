@@ -1,3 +1,5 @@
+## version 1.0.13:
+- play-dl broke (now uses youtube-dl-exec)
 ## version 1.0.12:
 - update packages
 ## version 1.0.11:

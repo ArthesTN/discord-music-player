@@ -4,7 +4,7 @@ exports.Queue = void 0;
 const StreamConnection_1 = require("../voice/StreamConnection");
 const voice_1 = require("@discordjs/voice");
 const __1 = require("..");
-const play_dl_1 = require("yt-stream");
+const play_dl_1 = require("play-dl");
 const Filters_1 = require("./Filters");
 class Queue {
     /**
@@ -223,7 +223,7 @@ class Queue {
             options.seek = song.seekTime; //If on repeat, song will start from the same seeked spot
         let streamSong;
         let i = 0;
-        /* yt-stream */
+        /* yt-stream 
         while (!streamSong && i < 5) {
             streamSong = await (0, play_dl_1.stream)(song.url, {
                 quality: 'high',
@@ -234,8 +234,7 @@ class Queue {
                 console.error(error);
             });
             i++;
-        } 
-        /*
+        } */
         while (!streamSong && i < 5) {
             streamSong = await (0, play_dl_1.stream)(song.url, {
                 seek: options.seek ? options.seek / 1000 : 0,
@@ -245,7 +244,7 @@ class Queue {
                 console.error(error);
             });
             i++;
-        } */
+        }
         if (!streamSong) {
             this.player.emit('error', __1.DMPErrorMessages.SearchIsNull, this);
             const oldSong = this.songs.shift();
