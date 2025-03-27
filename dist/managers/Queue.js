@@ -266,7 +266,7 @@ class Queue {
             }
         */
         // youtube-dl-exec
-        console.log(song.url)
+        //console.log(song.url)
         let process;
         process = youtubedl.exec(song.url, {
                     output: '-',
