@@ -268,13 +268,18 @@ class Queue {
         // youtube-dl-exec
         //console.log(song.url)
         let process;
-        process = youtubedl.exec(song.url, {
-                    output: '-',
-                    format: 'bestaudio[ext=webm]',
-                    quiet: true,
-                }, { stdio: ['ignore', 'pipe', 'ignore'] });
-            
-        streamSong = process.stdout;
+        try {
+            const process = youtubedl.exec(song.url, {
+                output: '-',
+                format: 'bestaudio[ext=webm]',
+                quiet: false
+            }, { stdio: ['ignore', 'pipe', 'pipe'] });
+            streamSong = process.stdout;
+
+        } catch (error) {
+            console.error(`Error during yt-dlp process: ${error.message}`);
+        }
+        
         if (!streamSong) {
             this.player.emit('error', __1.DMPErrorMessages.SearchIsNull, this);
             const oldSong = this.songs.shift();
