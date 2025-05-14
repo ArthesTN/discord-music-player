@@ -1,3 +1,5 @@
+## version 1.0.14:
+- fix broken pipe
 ## version 1.0.13:
 - play-dl broke (now uses youtube-dl-exec)
 - run npm update first

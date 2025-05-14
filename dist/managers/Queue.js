@@ -8,6 +8,7 @@ const play_dl_1 = require("yt-stream");
 const Filters_1 = require("./Filters");
 const ytdl = require("@distube/ytdl-core");
 const youtubedl = require('youtube-dl-exec');
+const { PassThrough } = require('stream');
 
 class Queue {
     /**
@@ -28,6 +29,7 @@ class Queue {
         this.options = __1.DefaultPlayerOptions;
         this.repeatMode = __1.RepeatMode.DISABLED;
         this.destroyed = false;
+        this.process = null;
         /**
          * Guild instance
          * @name Queue#guild
@@ -169,12 +171,26 @@ class Queue {
             .on('error', (err) => this.player.emit('error', err.message, this));
         return this;
     }
+    killCurrentProcess() {
+        if (this.process && !this.process.killed) {
+            this.process.kill('SIGKILL'); // Forcefully kill the process
+            console.log(`Process with PID ${this.process.pid} has been killed.`);
+        } else {
+            console.log('No process to kill.');
+        }
+        this.process.on('exit', (code, signal) => {
+            console.log(`Process exited with signal: ${signal}`);
+            console.log('Process killed:', true); // Manually confirm termination
+            console.log(this.process.killed)
+        });
+    }
     /**
      * Plays or Queues a song (in a VoiceChannel)
      * @param {Song | string} search
      * @param {PlayOptions} [options=DefaultPlayOptions]
      * @returns {Promise<Song>}
      */
+    
     async play(search, options = __1.DefaultPlayOptions) {
         if (this.destroyed) {
             this.player.emit('error', __1.DMPErrorMessages.QueueDestroyed, this);
@@ -267,14 +283,21 @@ class Queue {
         */
         // youtube-dl-exec
         //console.log(song.url)
-        let process;
+        if (this.process){
+
+        }
+        const pass = new PassThrough();
+
         try {
-            const process = youtubedl.exec(song.url, {
+            this.process = youtubedl.exec(song.url, {
                 output: '-',
                 format: 'bestaudio[ext=webm]',
                 quiet: false
-            }, { stdio: ['ignore', 'pipe', 'pipe'] });
-            streamSong = process.stdout;
+            }, { stdio: ['ignore', 'pipe', 'pipe'], })
+            ;
+            // Pipe the stdout to PassThrough
+            streamSong = this.process.stdout;
+            streamSong.pipe(pass)
 
         } catch (error) {
             console.error(`Error during yt-dlp process: ${error.message}`);
@@ -293,18 +316,19 @@ class Queue {
             }
         }
         //  yt-stream is streamSong.stream, otherwise streamSong
+        // new passThrough, as pass
         else {
             let resource;
             if (song.filters) {
-                resource = this.connection.createAudioStream((0, Filters_1.createFFmpegStream)(streamSong, { encoderArgs: song.filters, seek: options.seek }), {
+                resource = this.connection.createAudioStream((0, Filters_1.createFFmpegStream)(pass, { encoderArgs: song.filters, seek: options.seek }), {
                     metadata: song,
                     inputType: voice_1.StreamType.OggOpus
                 });
             }
             else {
-                resource = this.connection.createAudioStream(streamSong, {
+                resource = this.connection.createAudioStream(pass, {
                     metadata: song,
-                    inputType: streamSong.type
+                    inputType: pass.type
                 });
             }
             setTimeout((_) => {
@@ -393,6 +417,7 @@ class Queue {
             this.player.emit('error', __1.DMPErrorMessages.NoVoiceConnection, this);
             throw new __1.DMPError(__1.DMPErrors.NO_VOICE_CONNECTION);
         }
+        
         this.songs.splice(1, index);
         const skippedSong = this.songs[0];
         this.connection.stop();
